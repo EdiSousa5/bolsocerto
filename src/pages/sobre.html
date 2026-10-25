@@ -1,0 +1,31 @@
+<!--meta {
+  "path": "/sobre/",
+  "title": "Sobre e Metodologia | {{siteName}}",
+  "description": "Como funcionam as calculadoras do {{siteName}}: fontes, pressupostos e limitações dos cálculos de IRS, Segurança Social, crédito habitação e juros compostos.",
+  "priority": 0.3
+}-->
+<article class="content">
+  <h1>Sobre e metodologia</h1>
+  <p>O {{siteName}} é um conjunto de calculadoras financeiras gratuitas pensadas para quem vive e trabalha em Portugal. O objetivo é dar respostas rápidas, claras e honestas a perguntas sobre dinheiro do dia a dia.</p>
+
+  <h2>Pressupostos dos cálculos</h2>
+  <ul>
+    <li><strong>Ano fiscal:</strong> regras de IRS e Segurança Social de {{taxYear}}, para Portugal Continental (as Regiões Autónomas têm taxas próprias).</li>
+    <li><strong>IRS:</strong> calculamos o imposto final anual (não a retenção mensal), para um contribuinte com tributação separada. Aplicamos a dedução específica ({{specificDeduction}} ou as contribuições, se maiores), a dedução de despesas gerais familiares (250 €), {{dependentDeduction}} por dependente, o mínimo de existência ({{minimoExistencia}}), o IRS Jovem e a taxa adicional de solidariedade. Não incluímos deduções de saúde, educação, habitação, IVA de faturas ou PPR, pelo que o teu imposto real pode ser ligeiramente inferior.</li>
+    <li><strong>Recibos verdes:</strong> regime simplificado, com as despesas de 15% consideradas justificadas, e contribuições de 21,4% sobre o rendimento relevante.</li>
+    <li><strong>Crédito habitação:</strong> método francês com taxa constante durante todo o prazo, imposto do selo de 4% sobre juros e 0,6% sobre o capital. Não inclui seguros nem comissões.</li>
+    <li><strong>Juros compostos:</strong> capitalização mensal, com reforços no final de cada mês e imposto de 28% sobre os ganhos no resgate.</li>
+  </ul>
+
+  <h3>Escalões de IRS usados</h3>
+  {{bracketsTable}}
+
+  <h2>Limitações</h2>
+  <p>Os resultados são estimativas para fins informativos. Não constituem aconselhamento fiscal, jurídico ou financeiro. Para decisões importantes, confirma os valores no Portal das Finanças, na Segurança Social Direta ou com um profissional certificado.</p>
+
+  <h2>Como nos financiamos</h2>
+  <p>O {{siteName}} é gratuito e financiado por publicidade e por links de parceiros. Quando aderes a um serviço através de um link de parceiro, podemos receber uma comissão, sem qualquer custo adicional para ti. Os parceiros não influenciam os cálculos.</p>
+
+  <h2>Contacto</h2>
+  <p>Encontraste um erro ou tens uma sugestão? Escreve para {{contactLink}}.</p>
+</article>

@@ -1,0 +1,28 @@
+{
+  "siteName": "BolsoCerto",
+  "siteUrl": "https://edisousa5.github.io",
+  "tagline": "Calculadoras financeiras gratuitas para quem vive em Portugal",
+  "contactEmail": "",
+  "contactUrl": "https://github.com/EdiSousa5",
+  "adsenseClient": "",
+  "analyticsSnippet": "",
+  "affiliates": {
+    "banco": [
+      { "name": "Revolut", "text": "Conta à ordem digital com cartão e poupança. Abertura pelo telemóvel.", "url": "" },
+      { "name": "ActivoBank", "text": "Banco português sem comissão de manutenção nas condições do banco.", "url": "" }
+    ],
+    "investir": [
+      { "name": "Trading 212", "text": "Corretora com ETFs e ações, permite investimento mensal automático.", "url": "" },
+      { "name": "XTB", "text": "Corretora com planos de investimento em ETFs.", "url": "" },
+      { "name": "Lightyear", "text": "Plataforma de investimento em ações e ETFs.", "url": "" }
+    ],
+    "credito": [
+      { "name": "Doutor Finanças", "text": "Intermediário de crédito: compara propostas de vários bancos por ti.", "url": "" },
+      { "name": "ComparaJá", "text": "Comparador de crédito habitação e transferência de crédito.", "url": "" }
+    ],
+    "freelancer": [
+      { "name": "InvoiceXpress", "text": "Software de faturação certificado pela AT.", "url": "" },
+      { "name": "Moloni", "text": "Faturação e gestão para trabalhadores independentes.", "url": "" }
+    ]
+  }
+}

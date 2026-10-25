@@ -1,0 +1,126 @@
+<!--meta {
+  "path": "/credito-habitacao/",
+  "title": "Simulador de Crédito Habitação | Prestação, Euribor e Amortização",
+  "h1": "Simulador de Crédito Habitação",
+  "description": "Calcula a prestação da tua casa com Euribor e spread, o total de juros, impostos, taxa de esforço e quanto poupas com amortizações antecipadas. Mapa anual completo.",
+  "priority": 0.9,
+  "app": true
+}-->
+<h1>Simulador de Crédito Habitação</h1>
+<p class="lead">Calcula a prestação mensal, quanto vais pagar de juros ao banco e quanto poupas se amortizares antecipadamente. Inclui imposto do selo e taxa de esforço.</p>
+
+<div class="calc">
+  <form class="card" id="form" autocomplete="off">
+    <h2>O teu empréstimo</h2>
+    <div class="field">
+      <label for="principal">Montante do empréstimo</label>
+      <div class="input-wrap"><input type="number" id="principal" name="principal" value="150000" min="0" step="1000" inputmode="decimal"><span class="suffix">€</span></div>
+      <small>Os bancos financiam normalmente até 90% do valor da casa para habitação própria permanente.</small>
+    </div>
+    <div class="field">
+      <label for="years">Prazo</label>
+      <div class="input-wrap"><input type="number" id="years" name="years" value="30" min="1" max="40" step="1" inputmode="numeric"><span class="suffix">anos</span></div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="euribor">Euribor</label>
+        <div class="input-wrap"><input type="number" id="euribor" name="euribor" value="2.2" step="0.01" inputmode="decimal"><span class="suffix">%</span></div>
+        <small>Ou a taxa fixa, deixando o spread a 0.</small>
+      </div>
+      <div class="field">
+        <label for="spread">Spread</label>
+        <div class="input-wrap"><input type="number" id="spread" name="spread" value="1" min="0" step="0.05" inputmode="decimal"><span class="suffix">%</span></div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="extraMonthly">Amortização extra por mês</label>
+      <div class="input-wrap"><input type="number" id="extraMonthly" name="extraMonthly" value="0" min="0" step="25" inputmode="decimal"><span class="suffix">€</span></div>
+      <small>Valor adicional que pagas todos os meses para reduzir o prazo.</small>
+    </div>
+    <div class="field">
+      <label for="netIncome">Rendimento líquido mensal do agregado (opcional)</label>
+      <div class="input-wrap"><input type="number" id="netIncome" name="netIncome" value="0" min="0" step="50" inputmode="decimal"><span class="suffix">€</span></div>
+      <small>Para calcular a taxa de esforço.</small>
+    </div>
+  </form>
+
+  <section class="card results" aria-live="polite">
+    <div class="big">
+      <div class="label">Prestação mensal</div>
+      <div class="value" id="outPayment">-</div>
+      <div class="sub" id="outPaymentSub">-</div>
+    </div>
+    <table class="lines">
+      <tbody>
+        <tr><td>Capital emprestado</td><td id="outPrincipal">-</td></tr>
+        <tr><td>Total de juros</td><td class="neg" id="outInterest">-</td></tr>
+        <tr><td>Imposto do selo sobre juros (4%)</td><td class="neg" id="outInterestStamp">-</td></tr>
+        <tr class="total"><td>Total pago ao banco</td><td id="outTotal">-</td></tr>
+        <tr><td>Imposto do selo na escritura (0,6%)</td><td id="outStampOpening">-</td></tr>
+      </tbody>
+    </table>
+    <div class="bar" id="bar" role="img" aria-label="Capital vs juros"></div>
+    <div class="legend"><span><i style="background:#0f766e"></i>Capital</span><span><i style="background:#f59e0b"></i>Juros e imposto</span></div>
+    <div class="stats" style="margin-top:16px">
+      <div class="stat"><span class="label">Taxa anual (TAN)</span><span class="value" id="outRate">-</span></div>
+      <div class="stat"><span class="label">Taxa de esforço</span><span class="value" id="outEffort">-</span></div>
+    </div>
+    <div class="highlight" id="outExtra" hidden></div>
+    <p class="note" id="noteEffort" hidden></p>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" data-share>Copiar link com estes valores</button>
+      <button type="button" class="btn" data-print>Imprimir</button>
+    </div>
+  </section>
+</div>
+
+<h2>Evolução da dívida</h2>
+<div class="card">
+  <canvas class="chart" id="chart" role="img" aria-label="Capital em dívida ao longo dos anos"></canvas>
+  <div class="legend"><span><i style="background:#94a3b8"></i>Sem amortização extra</span><span><i style="background:#0f766e"></i>Com amortização extra</span></div>
+</div>
+
+<h2>Mapa anual</h2>
+<div class="table-wrap">
+  <table class="data">
+    <thead><tr><th>Ano</th><th>Pago no ano</th><th>Juros</th><th>Capital amortizado</th><th>Em dívida</th></tr></thead>
+    <tbody id="table"></tbody>
+  </table>
+</div>
+
+{{affiliates:credito}}
+
+<article class="content">
+  <h2>Como é calculada a prestação</h2>
+  <p>A maioria dos créditos habitação em Portugal usa o <strong>método francês</strong>: a prestação é constante enquanto a taxa não muda. No início, quase toda a prestação são juros; com o tempo, a parte de capital vai aumentando. A taxa de juro (TAN) é a soma do <strong>indexante</strong> (normalmente a Euribor a 3, 6 ou 12 meses) com o <strong>spread</strong> definido pelo banco.</p>
+  <p>Sobre os juros de cada prestação incide ainda <strong>imposto do selo de 4%</strong>, e na escritura paga-se 0,6% do valor do empréstimo, também em imposto do selo. Não estão incluídos seguros de vida e multirriscos, comissões de avaliação e de processo, nem o IMT da compra.</p>
+
+  <h3>Taxa variável, fixa ou mista</h3>
+  <p>Com <strong>taxa variável</strong>, a prestação é revista com a Euribor e pode subir ou descer. Com <strong>taxa fixa</strong>, a prestação não muda durante o período fixo, mas a taxa é normalmente mais alta à partida. A <strong>taxa mista</strong> combina um período inicial fixo (por exemplo, 2 a 10 anos) com taxa variável no restante prazo. Para simular uma taxa fixa, coloca a taxa total no campo Euribor e o spread a zero.</p>
+
+  <h3>Vale a pena amortizar antecipadamente?</h3>
+  <p>Cada euro amortizado deixa de pagar juros durante o resto do prazo, por isso amortizar cedo tem um efeito enorme. Compara a poupança com o que conseguirias ganhar a investir esse dinheiro (usa a nossa <a href="/juros-compostos/">calculadora de juros compostos</a>) e garante primeiro um fundo de emergência. Nos contratos com taxa variável, a comissão de amortização antecipada está limitada por lei a 0,5% do capital amortizado (2% na taxa fixa), podendo existir isenções temporárias.</p>
+
+  <h3>Taxa de esforço</h3>
+  <p>A taxa de esforço é a percentagem do rendimento líquido do agregado gasta com prestações de crédito. A recomendação macroprudencial do Banco de Portugal limita os novos créditos a uma taxa de esforço de 50%, mas para ter margem de segurança o ideal é ficar abaixo dos 35%.</p>
+
+  <h2>Perguntas frequentes</h2>
+  <details class="faq">
+    <summary>Qual a prestação de um crédito de 150 000 euros a 30 anos?</summary>
+    <div><p>Depende da taxa. A 3% de TAN (por exemplo Euribor 2,2% e spread 0,8%), a prestação ronda os 632 € por mês, mais imposto do selo sobre os juros. Coloca os teus valores na calculadora para ver a prestação exata.</p></div>
+  </details>
+  <details class="faq">
+    <summary>É melhor reduzir o prazo ou a prestação ao amortizar?</summary>
+    <div><p>Reduzir o prazo poupa mais juros no total, porque a dívida acaba mais cedo. Reduzir a prestação dá mais folga mensal no orçamento. Esta calculadora simula a redução de prazo mantendo a prestação.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Euribor a 3, 6 ou 12 meses?</summary>
+    <div><p>O prazo da Euribor define de quanto em quanto tempo a taxa é revista. Prazos mais curtos acompanham o mercado mais depressa, tanto a subir como a descer. Prazos mais longos dão mais estabilidade à prestação.</p></div>
+  </details>
+  <details class="faq">
+    <summary>O que é a TAEG?</summary>
+    <div><p>A TAEG é a Taxa Anual de Encargos Efetiva Global: inclui a TAN e todos os custos obrigatórios (seguros, comissões, impostos). É o melhor indicador para comparar propostas de bancos diferentes.</p></div>
+  </details>
+</article>
+
+<script type="module" src="/assets/js/credito.js"></script>

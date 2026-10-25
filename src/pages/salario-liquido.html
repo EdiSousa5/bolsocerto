@@ -1,0 +1,144 @@
+<!--meta {
+  "path": "/salario-liquido/",
+  "title": "Calculadora de Salário Líquido {{taxYear}} | Bruto para Líquido em Portugal",
+  "h1": "Calculadora de Salário Líquido {{taxYear}}",
+  "description": "Calcula o teu salário líquido a partir do bruto: IRS, Segurança Social, IRS Jovem, subsídio de alimentação e custo total para a empresa. Grátis e atualizada para {{taxYear}}.",
+  "priority": 1.0,
+  "app": true
+}-->
+<h1>Calculadora de Salário Líquido {{taxYear}}</h1>
+<p class="lead">Descobre quanto recebes realmente ao fim do mês. Inclui IRS, Segurança Social, IRS Jovem, subsídio de alimentação e o custo total que representas para a empresa. <span class="updated">Regras de {{taxYear}}</span></p>
+
+<div class="calc">
+  <form class="card" id="form" autocomplete="off">
+    <h2>Os teus dados</h2>
+    <div class="field">
+      <label for="monthlyGross">Salário bruto mensal</label>
+      <div class="input-wrap"><input type="number" id="monthlyGross" name="monthlyGross" value="1500" min="0" step="10" inputmode="decimal"><span class="suffix">€</span></div>
+      <small>Valor base do contrato, pago 14 vezes por ano (inclui subsídios de férias e Natal).</small>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="dependents">Dependentes</label>
+        <input type="number" id="dependents" name="dependents" value="0" min="0" max="10" step="1" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="jovemYear">IRS Jovem</label>
+        <select id="jovemYear" name="jovemYear">
+          <option value="0">Não aplicável</option>
+          <option value="1">1.º ano (100% isento)</option>
+          <option value="2">2.º ano (75%)</option>
+          <option value="3">3.º ano (75%)</option>
+          <option value="4">4.º ano (75%)</option>
+          <option value="5">5.º ano (50%)</option>
+          <option value="6">6.º ano (50%)</option>
+          <option value="7">7.º ano (50%)</option>
+          <option value="8">8.º ano (25%)</option>
+          <option value="9">9.º ano (25%)</option>
+          <option value="10">10.º ano (25%)</option>
+        </select>
+      </div>
+    </div>
+    <fieldset>
+      <legend>Subsídio de alimentação</legend>
+      <div class="row">
+        <div class="field">
+          <label for="mealPerDay">Valor por dia</label>
+          <div class="input-wrap"><input type="number" id="mealPerDay" name="mealPerDay" value="10.20" min="0" step="0.01" inputmode="decimal"><span class="suffix">€</span></div>
+        </div>
+        <div class="field">
+          <label for="mealType">Forma de pagamento</label>
+          <select id="mealType" name="mealType">
+            <option value="card">Cartão refeição</option>
+            <option value="cash">Dinheiro (no salário)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="mealDays">Dias úteis por mês</label>
+        <input type="number" id="mealDays" name="mealDays" value="22" min="0" max="31" step="1" inputmode="numeric">
+      </div>
+    </fieldset>
+    <p class="note">Cálculo para Portugal Continental, contribuinte não casado ou com tributação separada. O valor de IRS é o imposto <strong>final</strong> do ano (o que pagas depois do acerto do reembolso), não a retenção mensal.</p>
+  </form>
+
+  <section class="card results" aria-live="polite">
+    <div class="big">
+      <div class="label">Salário líquido mensal</div>
+      <div class="value" id="outNet">-</div>
+      <div class="sub" id="outNetSub">-</div>
+    </div>
+    <table class="lines">
+      <tbody>
+        <tr><td>Salário bruto</td><td id="outGross">-</td></tr>
+        <tr><td>Segurança Social (11%)</td><td class="neg" id="outSS">-</td></tr>
+        <tr><td>IRS</td><td class="neg" id="outIRS">-</td></tr>
+        <tr class="total"><td>Líquido (por mês, x14)</td><td id="outNet2">-</td></tr>
+        <tr><td>Subsídio de alimentação (por mês)</td><td id="outMeal">-</td></tr>
+      </tbody>
+    </table>
+    <div class="bar" id="bar" role="img" aria-label="Distribuição do salário bruto"></div>
+    <div class="legend"><span><i style="background:#0f766e"></i>Líquido</span><span><i style="background:#f59e0b"></i>IRS</span><span><i style="background:#64748b"></i>Segurança Social</span></div>
+    <div class="stats" style="margin-top:16px">
+      <div class="stat"><span class="label">Líquido anual (com alimentação)</span><span class="value" id="outNetAnnual">-</span></div>
+      <div class="stat"><span class="label">IRS anual</span><span class="value" id="outIRSAnnual">-</span></div>
+      <div class="stat"><span class="label">Taxa efetiva (IRS + SS)</span><span class="value" id="outRate">-</span></div>
+      <div class="stat"><span class="label">Taxa marginal de IRS</span><span class="value" id="outMarginal">-</span></div>
+    </div>
+    <div class="highlight">Custo total para a empresa: <strong id="outEmployer">-</strong> por ano (<span id="outEmployerMonthly">-</span> por mês x14), incluindo 23,75% de TSU.</div>
+    <p class="note" id="noteMinimo" hidden>Aplicou-se o mínimo de existência: o teu IRS foi reduzido para que o rendimento líquido não fique abaixo do valor mínimo legal.</p>
+    <p class="note" id="noteMeal" hidden></p>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" data-share>Copiar link com estes valores</button>
+      <button type="button" class="btn" data-print>Imprimir</button>
+    </div>
+  </section>
+</div>
+
+{{affiliates:banco}}
+
+<article class="content">
+  <h2>Como se calcula o salário líquido em Portugal</h2>
+  <p>O salário líquido é o que sobra do salário bruto depois de dois descontos obrigatórios: a <strong>Segurança Social</strong> (11% do bruto, pagos pelo trabalhador) e o <strong>IRS</strong>. A empresa paga ainda, por cima do teu bruto, 23,75% de TSU, que não aparece no teu recibo mas faz parte do teu custo.</p>
+  <p>O IRS é progressivo: o rendimento é dividido por escalões e cada parte paga a taxa do seu escalão. Antes de aplicar as taxas, ao rendimento bruto anual é subtraída a <strong>dedução específica</strong> (o maior valor entre {{specificDeduction}} e as contribuições para a Segurança Social). Ao imposto apurado subtraem-se depois as deduções à coleta, como as despesas gerais familiares e os dependentes.</p>
+
+  <h3>Escalões de IRS {{taxYear}} (Continente)</h3>
+  {{bracketsTable}}
+  <p>Estas taxas aplicam-se ao rendimento coletável anual. Ter uma taxa marginal de 31,4% não significa que pagas 31,4% sobre tudo: só a parte do rendimento que cai nesse escalão é tributada a essa taxa.</p>
+
+  <h3>Retenção na fonte vs. imposto final</h3>
+  <p>Todos os meses a empresa retém uma parte do salário para IRS, de acordo com as tabelas de retenção. Em abril-junho do ano seguinte, a declaração de IRS calcula o imposto real e devolve (reembolso) ou cobra a diferença. Esta calculadora mostra o <strong>imposto final</strong>, que é o que efetivamente pagas no fim das contas. Por isso o líquido mensal mostrado pode ser ligeiramente diferente do que vês no recibo, mas representa melhor o teu rendimento real.</p>
+
+  <h3>IRS Jovem</h3>
+  <p>Os jovens até aos 35 anos têm uma isenção parcial de IRS sobre rendimentos do trabalho durante 10 anos: 100% no primeiro ano, 75% do segundo ao quarto, 50% do quinto ao sétimo e 25% do oitavo ao décimo. A isenção tem um limite anual de {{irsJovemCap}} (55 vezes o IAS). Escolhe o ano em que estás no campo "IRS Jovem" para ver o impacto.</p>
+
+  <h3>Subsídio de alimentação</h3>
+  <p>O subsídio de alimentação está isento de IRS e Segurança Social até {{mealCash}} por dia quando pago em dinheiro e até {{mealCard}} por dia quando pago em cartão refeição. O valor acima destes limites é tributado como salário. Por isso, pedir o subsídio em cartão costuma compensar.</p>
+
+  <h3>Duodécimos</h3>
+  <p>Receber os subsídios de férias e Natal em duodécimos não altera o rendimento anual nem o imposto: apenas distribui o mesmo dinheiro por 12 meses em vez de 14. Para saber o valor mensal com duodécimos, consulta o texto abaixo do valor principal na calculadora.</p>
+
+  <h2>Perguntas frequentes</h2>
+  <details class="faq">
+    <summary>Quanto recebo líquido com 1000 euros brutos?</summary>
+    <div><p>Com 1000 € brutos descontas 110 € por mês para a Segurança Social e uma parte reduzida para IRS, que depende dos teus dependentes e de beneficiares do IRS Jovem. Coloca 1000 na calculadora para ver o valor exato, já com o teu subsídio de alimentação.</p></div>
+  </details>
+  <details class="faq">
+    <summary>O salário mínimo paga IRS?</summary>
+    <div><p>Não. O mínimo de existência garante que quem recebe o salário mínimo nacional não paga IRS. Desconta apenas 11% para a Segurança Social.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Porque é que o meu recibo mostra um valor diferente?</summary>
+    <div><p>O recibo usa as tabelas de retenção na fonte, que são uma aproximação mensal. O imposto real só é apurado na declaração anual de IRS. A diferença é devolvida ou cobrada no reembolso. Esta calculadora mostra o valor real anual dividido pelos 14 pagamentos.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Quanto custo à empresa?</summary>
+    <div><p>Além do teu salário bruto, a empresa paga 23,75% de TSU à Segurança Social, mais o subsídio de alimentação. Um salário de 1500 € brutos custa à empresa cerca de 1856 € por mês (x14), sem contar seguros e outros benefícios.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Os dependentes reduzem o IRS?</summary>
+    <div><p>Sim. Cada dependente dá uma dedução à coleta de {{dependentDeduction}} (podendo ser maior para crianças até aos 6 anos), que reduz diretamente o imposto a pagar. Se o imposto já for zero, a dedução não gera reembolso adicional.</p></div>
+  </details>
+</article>
+
+<script type="module" src="/assets/js/salario.js"></script>

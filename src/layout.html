@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical}}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:site_name" content="{{siteName}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/style.css">
+{{head}}
+</head>
+<body>
+<a class="skip" href="#conteudo">Saltar para o conteúdo</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">€</span>{{siteName}}</a>
+    <nav class="main-nav" aria-label="Calculadoras">{{nav}}</nav>
+  </div>
+</header>
+<main id="conteudo" class="wrap">
+{{content}}
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <strong>{{siteName}}</strong>
+      <p>{{tagline}}. Todos os cálculos são feitos no teu navegador: não guardamos os valores que introduzes.</p>
+    </div>
+    <nav aria-label="Rodapé">
+      <a href="/sobre/">Sobre e metodologia</a>
+      <a href="/privacidade/">Privacidade e cookies</a>
+    </nav>
+    <p class="fineprint">Os resultados são estimativas informativas e não substituem aconselhamento fiscal ou financeiro. &copy; {{buildYear}} {{siteName}}</p>
+  </div>
+</footer>
+</body>
+</html>

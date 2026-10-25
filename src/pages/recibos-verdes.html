@@ -1,0 +1,141 @@
+<!--meta {
+  "path": "/recibos-verdes/",
+  "title": "Simulador Recibos Verdes {{taxYear}} | Líquido, IRS e Segurança Social",
+  "h1": "Simulador de Recibos Verdes {{taxYear}}",
+  "description": "Calcula quanto recebes líquido a recibos verdes: IRS no regime simplificado, Segurança Social, IVA e comparação com um contrato de trabalho. Descobre quanto deves cobrar.",
+  "priority": 0.9,
+  "app": true
+}-->
+<h1>Simulador de Recibos Verdes {{taxYear}}</h1>
+<p class="lead">Quanto fica realmente no teu bolso como trabalhador independente? E quanto precisas de faturar para ganhar o mesmo que num contrato? <span class="updated">Regras de {{taxYear}}</span></p>
+
+<div class="calc">
+  <form class="card" id="form" autocomplete="off">
+    <h2>A tua atividade</h2>
+    <div class="field">
+      <label for="monthlyBilling">Faturação média mensal</label>
+      <div class="input-wrap"><input type="number" id="monthlyBilling" name="monthlyBilling" value="2000" min="0" step="50" inputmode="decimal"><span class="suffix">€</span></div>
+      <small>Valor dos recibos sem IVA. A simulação assume 12 meses de faturação.</small>
+    </div>
+    <div class="field">
+      <label for="coef">Tipo de rendimento</label>
+      <select id="coef" name="coef">
+        <option value="0.75">Serviços profissionais (art. 151.º CIRS) - 75% tributado</option>
+        <option value="0.35">Outras prestações de serviços - 35% tributado</option>
+        <option value="0.15">Vendas de bens / restauração - 15% tributado</option>
+      </select>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="dependents">Dependentes</label>
+        <input type="number" id="dependents" name="dependents" value="0" min="0" max="10" step="1" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="jovemYear">IRS Jovem</label>
+        <select id="jovemYear" name="jovemYear">
+          <option value="0">Não aplicável</option>
+          <option value="1">1.º ano (100%)</option>
+          <option value="2">2.º ano (75%)</option>
+          <option value="3">3.º ano (75%)</option>
+          <option value="4">4.º ano (75%)</option>
+          <option value="5">5.º ano (50%)</option>
+          <option value="6">6.º ano (50%)</option>
+          <option value="7">7.º ano (50%)</option>
+          <option value="8">8.º ano (25%)</option>
+          <option value="9">9.º ano (25%)</option>
+          <option value="10">10.º ano (25%)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="check"><input type="checkbox" id="ssExempt" name="ssExempt"> <span>Estou nos primeiros 12 meses de atividade (isento de Segurança Social)</span></label>
+    </div>
+    <fieldset>
+      <legend>Comparar com contrato</legend>
+      <div class="row">
+        <div class="field">
+          <label for="compareGross">Salário bruto (x14)</label>
+          <div class="input-wrap"><input type="number" id="compareGross" name="compareGross" value="1500" min="0" step="50" inputmode="decimal"><span class="suffix">€</span></div>
+        </div>
+        <div class="field">
+          <label for="hours">Horas faturáveis/mês</label>
+          <input type="number" id="hours" name="hours" value="120" min="1" step="1" inputmode="numeric">
+        </div>
+      </div>
+      <small>Um independente não tem férias pagas nem subsídios: conta só as horas que consegues efetivamente faturar.</small>
+    </fieldset>
+  </form>
+
+  <section class="card results" aria-live="polite">
+    <div class="big">
+      <div class="label">Rendimento líquido mensal</div>
+      <div class="value" id="outNet">-</div>
+      <div class="sub" id="outNetSub">-</div>
+    </div>
+    <table class="lines">
+      <tbody>
+        <tr><td>Faturação</td><td id="outBilling">-</td></tr>
+        <tr><td>Segurança Social</td><td class="neg" id="outSS">-</td></tr>
+        <tr><td>IRS (média mensal)</td><td class="neg" id="outIRS">-</td></tr>
+        <tr class="total"><td>Líquido por mês</td><td id="outNet2">-</td></tr>
+      </tbody>
+    </table>
+    <div class="bar" id="bar" role="img" aria-label="Distribuição da faturação"></div>
+    <div class="legend"><span><i style="background:#0f766e"></i>Líquido</span><span><i style="background:#f59e0b"></i>IRS</span><span><i style="background:#64748b"></i>Segurança Social</span></div>
+    <div class="stats" style="margin-top:16px">
+      <div class="stat"><span class="label">Líquido anual</span><span class="value" id="outNetAnnual">-</span></div>
+      <div class="stat"><span class="label">Taxa efetiva (IRS + SS)</span><span class="value" id="outRate">-</span></div>
+      <div class="stat"><span class="label">IRS anual</span><span class="value" id="outIRSAnnual">-</span></div>
+      <div class="stat"><span class="label">Rendimento tributável</span><span class="value" id="outTaxable">-</span></div>
+    </div>
+    <div class="highlight" id="outEquivalent">-</div>
+    <div class="highlight" id="outTarget">-</div>
+    <p class="note" id="noteIVA" hidden></p>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" data-share>Copiar link com estes valores</button>
+      <button type="button" class="btn" data-print>Imprimir</button>
+    </div>
+  </section>
+</div>
+
+{{affiliates:freelancer}}
+
+<article class="content">
+  <h2>Como funcionam os impostos a recibos verdes</h2>
+  <p>Quem passa recibos verdes (categoria B) está normalmente no <strong>regime simplificado</strong>. Neste regime não declaras despesas diretamente: o Estado assume que só uma parte da faturação é rendimento. Para a maioria das profissões liberais (programadores, designers, consultores, explicadores), apenas <strong>75% da faturação</strong> conta para IRS. Esse valor soma-se a outros rendimentos e é tributado pelos mesmos escalões do trabalho por conta de outrem.</p>
+  <p>Atenção: para manter os 25% "livres", tens de justificar despesas de pelo menos 15% da faturação (no e-fatura, rendas de escritório, formação, etc.). Uma parte é automaticamente considerada através da dedução específica. Se não justificares, a diferença é acrescentada ao rendimento tributável. Este simulador assume que essas despesas estão justificadas.</p>
+
+  <h3>Segurança Social dos trabalhadores independentes</h3>
+  <p>A contribuição é de <strong>21,4%</strong> sobre o rendimento relevante, que corresponde a 70% do valor faturado em prestação de serviços (ou 20% em vendas). Na prática, pagas cerca de 15% do que faturas. A declaração é trimestral e a contribuição mínima é de 20 € por mês. A base de incidência tem um teto de {{ssMaxBase}} por mês.</p>
+  <p>Nos <strong>primeiros 12 meses</strong> após o primeiro início de atividade ficas isento de contribuições. Esta isenção faz muita diferença no primeiro ano.</p>
+
+  <h3>IVA</h3>
+  <p>Se faturares até {{ivaLimit}} por ano, podes beneficiar da isenção do artigo 53.º do CIVA e não cobrar IVA. Acima disso, tens de acrescentar 23% de IVA às tuas faturas e entregá-lo ao Estado. O IVA não é rendimento teu: entra e sai.</p>
+
+  <h3>Recibos verdes ou contrato: o que compensa?</h3>
+  <p>A comparação justa não é entre o bruto do contrato e a faturação. Um contrato paga 14 meses, inclui férias pagas, baixa médica, subsídio de desemprego e a empresa paga a TSU. A recibos verdes, cada dia de férias é um dia sem faturar. Por isso, a regra prática é cobrar pelo menos 30% a 50% acima do valor equivalente ao contrato. Usa o campo "Comparar com contrato" para veres o valor mínimo a faturar.</p>
+
+  <h2>Perguntas frequentes</h2>
+  <details class="faq">
+    <summary>Quanto desconto a recibos verdes?</summary>
+    <div><p>Na maioria dos casos de prestação de serviços, a Segurança Social leva cerca de 15% da faturação (21,4% sobre 70%) e o IRS depende do teu rendimento anual e da tua situação familiar. Com 2000 € por mês, o total de descontos anda tipicamente entre 25% e 30%.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Tenho de fazer retenção na fonte?</summary>
+    <div><p>Se trabalhares para empresas e não estiveres dispensado, o cliente retém 23% (ou 11,5% em alguns casos) do valor do recibo como adiantamento do IRS. Essa retenção não é um custo extra: é descontada no imposto final e o excesso é devolvido no reembolso. Quem fatura menos de {{ivaLimit}} por ano pode pedir dispensa de retenção.</p></div>
+  </details>
+  <details class="faq">
+    <summary>A isenção de Segurança Social no primeiro ano é automática?</summary>
+    <div><p>Sim, aplica-se automaticamente nos primeiros 12 meses após o primeiro enquadramento como trabalhador independente. Só tens direito uma vez.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Posso acumular recibos verdes com um contrato de trabalho?</summary>
+    <div><p>Sim. Os rendimentos somam-se no IRS. Na Segurança Social, quem acumula com trabalho por conta de outrem pode ficar isento de contribuições como independente se o rendimento relevante médio mensal for inferior a 4 vezes o IAS. Este simulador considera apenas o rendimento a recibos verdes.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Quanto devo cobrar por hora como freelancer?</summary>
+    <div><p>Define o salário de um contrato que consideras equivalente, as horas que realisticamente consegues faturar por mês, e o simulador calcula a faturação mensal e o valor hora mínimo para ficares com o mesmo líquido anual.</p></div>
+  </details>
+</article>
+
+<script type="module" src="/assets/js/recibos.js"></script>

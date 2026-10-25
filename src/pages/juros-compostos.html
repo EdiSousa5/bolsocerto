@@ -1,0 +1,118 @@
+<!--meta {
+  "path": "/juros-compostos/",
+  "title": "Calculadora de Juros Compostos | Simulador de Investimento e Poupança",
+  "h1": "Calculadora de Juros Compostos",
+  "description": "Simula quanto cresce o teu dinheiro com investimento mensal e juros compostos. Inclui impostos sobre mais-valias (28%) e o efeito da inflação. Gráfico e tabela ano a ano.",
+  "priority": 0.9,
+  "app": true
+}-->
+<h1>Calculadora de Juros Compostos</h1>
+<p class="lead">Vê quanto pode valer o teu dinheiro daqui a 10, 20 ou 30 anos se investires todos os meses. Com impostos e inflação, para não te enganares nas contas.</p>
+
+<div class="calc">
+  <form class="card" id="form" autocomplete="off">
+    <h2>O teu plano</h2>
+    <div class="row">
+      <div class="field">
+        <label for="initial">Valor inicial</label>
+        <div class="input-wrap"><input type="number" id="initial" name="initial" value="1000" min="0" step="100" inputmode="decimal"><span class="suffix">€</span></div>
+      </div>
+      <div class="field">
+        <label for="monthly">Reforço mensal</label>
+        <div class="input-wrap"><input type="number" id="monthly" name="monthly" value="200" min="0" step="10" inputmode="decimal"><span class="suffix">€</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="annualRate">Rentabilidade anual</label>
+        <div class="input-wrap"><input type="number" id="annualRate" name="annualRate" value="6" min="0" max="50" step="0.1" inputmode="decimal"><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label for="years">Prazo</label>
+        <div class="input-wrap"><input type="number" id="years" name="years" value="20" min="1" max="60" step="1" inputmode="numeric"><span class="suffix">anos</span></div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="inflation">Inflação média anual</label>
+      <div class="input-wrap"><input type="number" id="inflation" name="inflation" value="2" min="0" max="20" step="0.1" inputmode="decimal"><span class="suffix">%</span></div>
+      <small>Para mostrar o valor final em poder de compra de hoje.</small>
+    </div>
+    <div class="field">
+      <label class="check"><input type="checkbox" id="applyTax" name="applyTax" checked> <span>Descontar imposto de 28% sobre os ganhos no resgate</span></label>
+    </div>
+    <p class="note">Rentabilidades passadas não garantem resultados futuros. Como referência, um fundo de índice global de ações teve historicamente retornos médios na ordem dos 6% a 8% ao ano a longo prazo, mas com anos fortemente negativos pelo caminho.</p>
+  </form>
+
+  <section class="card results" aria-live="polite">
+    <div class="big">
+      <div class="label">Valor final líquido</div>
+      <div class="value" id="outNet">-</div>
+      <div class="sub" id="outNetSub">-</div>
+    </div>
+    <table class="lines">
+      <tbody>
+        <tr><td>Total investido</td><td id="outInvested">-</td></tr>
+        <tr><td>Juros ganhos</td><td id="outGains">-</td></tr>
+        <tr><td>Valor bruto</td><td id="outValue">-</td></tr>
+        <tr><td>Imposto sobre ganhos</td><td class="neg" id="outTax">-</td></tr>
+        <tr class="total"><td>Valor líquido</td><td id="outNet2">-</td></tr>
+      </tbody>
+    </table>
+    <div class="stats" style="margin-top:16px">
+      <div class="stat"><span class="label">Em poder de compra atual</span><span class="value" id="outReal">-</span></div>
+      <div class="stat"><span class="label">Multiplicação do dinheiro</span><span class="value" id="outMultiple">-</span></div>
+    </div>
+    <div class="highlight" id="outInsight">-</div>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" data-share>Copiar link com estes valores</button>
+      <button type="button" class="btn" data-print>Imprimir</button>
+    </div>
+  </section>
+</div>
+
+<h2>Evolução do investimento</h2>
+<div class="card">
+  <canvas class="chart" id="chart" role="img" aria-label="Evolução do investimento ao longo dos anos"></canvas>
+  <div class="legend"><span><i style="background:#0f766e"></i>Dinheiro investido</span><span><i style="background:#f59e0b"></i>Juros acumulados</span></div>
+</div>
+
+{{affiliates:investir}}
+
+<h2>Tabela ano a ano</h2>
+<div class="table-wrap">
+  <table class="data">
+    <thead><tr><th>Ano</th><th>Total investido</th><th>Juros acumulados</th><th>Valor bruto</th></tr></thead>
+    <tbody id="table"></tbody>
+  </table>
+</div>
+
+<article class="content">
+  <h2>O que são juros compostos</h2>
+  <p>Com juros compostos, os juros que ganhas são reinvestidos e passam também a render juros. No início o efeito é quase invisível, mas ao fim de 15 ou 20 anos os juros acumulados podem ultrapassar o dinheiro que investiste. É por isso que o fator mais importante não é a quantia, mas sim o <strong>tempo</strong>: começar 10 anos mais cedo pode valer mais do que duplicar o reforço mensal.</p>
+  <h3>A regra dos 72</h3>
+  <p>Uma forma rápida de estimar: divide 72 pela taxa de rentabilidade anual para saber em quantos anos o dinheiro duplica. A 6% ao ano, duplica em cerca de 12 anos; a 3%, em cerca de 24.</p>
+  <h3>Impostos sobre investimentos em Portugal</h3>
+  <p>Os ganhos de capital (mais-valias) e os juros de depósitos são tributados a uma taxa liberatória de <strong>28%</strong>, que pode ser substituída pelo englobamento no IRS. Os ganhos só são tributados quando vendes (no caso de ações e ETFs), o que favorece estratégias de longo prazo. Produtos como os PPR têm regras fiscais próprias, com taxas reduzidas no resgate após 8 anos e dedução no IRS na entrega.</p>
+  <h3>Não te esqueças da inflação</h3>
+  <p>Um milhão de euros daqui a 30 anos não compra o mesmo que hoje. O campo de inflação converte o resultado em poder de compra atual, para teres uma ideia realista do que o teu dinheiro vai valer.</p>
+
+  <h2>Perguntas frequentes</h2>
+  <details class="faq">
+    <summary>Quanto tenho se investir 100 euros por mês durante 20 anos?</summary>
+    <div><p>Investes 24 000 € no total. A 6% ao ano, o valor bruto ronda os 46 000 €, ou seja, quase metade vem de juros. Ajusta os valores na calculadora para o teu caso.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Qual é uma rentabilidade realista?</summary>
+    <div><p>Depósitos a prazo e certificados de aforro rendem tipicamente pouco acima da inflação. Fundos de ações globais tiveram historicamente médias superiores, mas com muita volatilidade. Para simulações prudentes, usa valores entre 4% e 6%.</p></div>
+  </details>
+  <details class="faq">
+    <summary>É melhor investir tudo de uma vez ou todos os meses?</summary>
+    <div><p>Historicamente, investir de uma vez rendeu mais na maioria dos casos, porque o dinheiro fica mais tempo no mercado. Investir todos os meses reduz o risco de entrar num mau momento e cria um hábito, que para a maioria das pessoas é o mais importante.</p></div>
+  </details>
+  <details class="faq">
+    <summary>Os juros são calculados mensal ou anualmente?</summary>
+    <div><p>Esta calculadora capitaliza mensalmente (a taxa anual dividida por 12), com os reforços no fim de cada mês, que é a forma mais próxima de um plano de investimento mensal real.</p></div>
+  </details>
+</article>
+
+<script type="module" src="/assets/js/juros.js"></script>

@@ -1,0 +1,15 @@
+{
+  "name": "bolsocerto",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Calculadoras financeiras para Portugal - site estático monetizado com anúncios e afiliados.",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js && node serve.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
