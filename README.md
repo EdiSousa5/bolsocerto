@@ -27,7 +27,7 @@ Não há dependências para instalar (só Node 18+).
 2. **Comprar um domínio** (.pt ou .com) e pôr o endereço em `siteUrl` em [site.config.json](site.config.json). Preenche também `contactEmail` (se vazio, usa `contactUrl`).
 3. **Publicar grátis no Cloudflare Pages** (ou Netlify):
    - Cria um repositório no GitHub com esta pasta.
-   - Cloudflare Pages: "Create project" > liga o repositório > Build command: `node build.js` > Output directory: `dist`.
+   - Cloudflare Pages: "Create project" > liga o repositório > Build command: `npm test && node build.js` > Output directory: `dist`.
    - Liga o domínio ao projeto.
 4. **Google Search Console:** adiciona o domínio e submete `https://O-TEU-DOMINIO/sitemap.xml`.
 5. **AdSense** (quando o site já tiver algumas semanas e tráfego):
